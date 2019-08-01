@@ -1,0 +1,18 @@
+<!-- 把所有模板公共的部分移除出页面的布局，接着把它们放在一个基础模板中，所有使用它的模板可以导入该基础模板。 -->
+<!-- 使用 block 控制语句来定义派生模板可以插入的地方。块被赋予唯一的名字。 -->
+<html>
+    <head>
+        {% if title %}
+        <title>{{title}} microblog</title>
+        {% else %}
+        <title>welcome to microblog </title>
+        {% endif %}
+    </head>
+    <body>
+        <div>
+            Microblog: <a href="/index">Home</a>
+        </div>
+        <hr>
+        {% block content  %}{% endblock %}
+    </body>
+</html>
