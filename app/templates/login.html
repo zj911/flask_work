@@ -1,6 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<!-- 渲染这些提供商的链接 -->
+<script>
+function set_openid(openid, pr)
+{
+    u = openid.search("<username>")
+    if (u!= -1){
+        user = prompt('Enter your ' + pr + ' username:')
+        openid = openid.substr(0, u) + user
+    }
+    form = document.forms['login']
+    form.elements['openid'].value = openid
+}
+</script>
+
+
+
 <h1>Sign In</h1>
 <form action="" method="POST" name="login">
     <!-- form.hidden_tag() 模板参数将被替换为一个隐藏字段，用来是实现在配置中激活的 CSRF 保护。如果你已经激活了 CSRF，这个字段需要出现在你所有的表单中。 -->
@@ -10,6 +27,16 @@
         Please enter your Openid:<br>
         
         {{ form.openid(size=80) }} <br>
+
+
+        <!-- 循环获取验证 openid 字段的信息 -->
+        {% for error in form.openid.errors %}
+        <span style="color: red">[{{error}}]</span>
+        {% endfor %}<br>
+
+        |{% for pr in providers %}
+        <a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}');">{{pr.name}}</a>
+        {% endfor %}
     </p>
     <p>
         {{ form.remember_me }} Remember me
@@ -17,7 +44,5 @@
     <p>
         <input type="submit" value="Sign In">
     </p>
-
 </form>
-
 {% endblock %}
